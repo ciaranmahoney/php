@@ -1,16 +1,39 @@
 <?php
 class Insightly{
-}
-
-class InsightlyRequestFactory{
   private $apikey;
 
   public function __construct($apikey){
     $this->apikey = $apikey;
   }
 
-  public function GET($url_path){
+  public function getCurrencies(){
+    return $this->GET("/v2.1/Currencies")->asJSON();
+  }
+
+  private function GET($url_path){
     return new InsightlyRequest("GET", $this->apikey, $url_path);
+  }
+
+  public function test($top=null){
+    echo "Test API .....\n";
+
+    echo "Testing authentication\n";
+
+    $passed = 0;
+    $failed = 0;
+
+    $currencies = $this->getCurrencies();
+    if(count($currencies) > 0){
+      echo "Authentication passed...\n";
+      $passed += 1;
+    }
+    else{
+      $failed += 1;
+    }
+
+    if($failed > 0){
+      throw new Exception($failed . " tests failed!");
+    }
   }
 }
 
