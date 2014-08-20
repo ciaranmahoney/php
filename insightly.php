@@ -25,7 +25,16 @@ class InsightlyRequest{
 
     switch($method){
     case "GET":
+      // GET is the default
       break;
+    case "DELETE":
+      $this->method("DELETE");
+      break;
+    case "POST":
+      $this->method("POST");
+      break;
+    case "PUT":
+      $this->method("PUT");
     default: throw new Exception('Invalid HTTP method: ' . $method);
     }
 
@@ -62,6 +71,10 @@ class InsightlyRequest{
     }
 
     return $data;
+  }
+
+  private function mtehod($method){
+    curl_setupt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
   }
 };
 ?>
