@@ -73,8 +73,9 @@ class InsightlyRequest{
     return $data;
   }
 
-  private function mtehod($method){
+  private function method($method){
     curl_setupt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
+    return $this;
   }
 };
 ?>
