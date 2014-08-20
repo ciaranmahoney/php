@@ -10,6 +10,14 @@ class Insightly{
     return $this->GET("/v2.1/Currencies")->asJSON();
   }
 
+  public function getUsers(){
+    return $this->GET("/v2.1/Users")->asJSON();
+  }
+
+  public function getUser($id){
+    return $this->GET("/v2.1/Users/" . $id)->asJSON();
+  }
+
   private function GET($url_path){
     return new InsightlyRequest("GET", $this->apikey, $url_path);
   }
@@ -28,6 +36,22 @@ class Insightly{
       $passed += 1;
     }
     else{
+      $failed += 1;
+    }
+
+    // Test getUsers()
+    try{
+      $users = $this->getUsers();
+      $user = $users[0];
+      $user_id = $user->USER_ID;
+      echo "PASS: getUsers(), found " . count($users) . " users.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      $user = null;
+      $users = null;
+      $user_id = null;
+      echo "FAIL: getUsers()\n";
       $failed += 1;
     }
 
