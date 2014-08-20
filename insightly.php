@@ -52,5 +52,16 @@ class InsightlyRequest{
 
     return $response;
   }
+
+  public function asJSON(){
+    $data = json_decode($this->asString());
+
+    $errno = json_last_error();
+    if($errno != JSON_ERROR_NONE){
+      throw new Exception("Error encountered decoding JSON: " . json_last_error_message());
+    }
+
+    return $data;
+  }
 };
 ?>
