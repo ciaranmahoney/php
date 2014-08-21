@@ -343,6 +343,22 @@ class Insightly{
     return $this->GET("/v2.1/Organisations/$organization_id/Tasks")->asJSON();
   }
 
+  public function getPipelines(){
+    return $this->GET("/v2.1/Pipelines")->asJSON();
+  }
+
+  public function getPipeline($id){
+    return $this->GET("/v2.1/Pipelines/$id")->asJSON();
+  }
+
+  public function getPipelineStages(){
+    return $this->GET("/v2.1/PipelineStages")->asJSON();
+  }
+
+  public function getPipelineStage($id){
+    return $this->GET("/v2.1/PipelineStages/$id")->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -812,6 +828,16 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: addOrganization()\n";
+      $failed += 1;
+    }
+
+    try{
+      $pipelines = $this->getPipelines();
+      echo "PASS: getPipelines(), found " . count($pipelines) . " pipelines\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getPilelines()\n";
       $failed += 1;
     }
 
