@@ -174,6 +174,55 @@ class Insightly{
     return true;
   }
 
+  public function getNotes($options){
+    $request = $this->GET("/v2.1/Notes");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function getNote($id){
+    return $request = $this->GET("/v2.1/Notes/$id")->asJSON();
+  }
+
+  public function addNote($note){
+    if($note == "sample"){
+      return $this->getNotes(array("top" => 1))[0];
+    }
+
+    $url_path = "/v2.1/Notes";
+    if(isset($note->NOTE_ID) && ($note->NOTE_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($notes)->asJSON();
+  }
+
+  public function getNoteComments($note_id){
+    return $this->GET("/v2.1/Notes/$note_id/Comments")->asJSON();
+  }
+
+  public function addNoteComment($note_id, $comment){
+    if($comment == "sample"){
+      $comment = new stdClass();
+      $comment->COMMENT_ID = 0;
+      $comment->BODY = "This is a comment.";
+      $comment->OWNER_USER_ID = 1;
+      $comment->DATE_CREATED_UTC = "2014-07-15 16:40:00";
+      $comment->DATE_UPDATED_UTC = "2014-07-15 16:40:00";
+      return $comment;
+    }
+
+    return $this->POST("/v2.1/$note_id/Comments")->body($comment)->asJSON();
+  }
+
+  public function deleteNote($id){
+    $this->DELETE("/v2.1/Notes/$id")->asString();
+    return true;
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -446,6 +495,17 @@ class Insightly{
     catch(Exception $ex){
       $category = null;
       echo "FAIL: addFileCategory()\n";
+      $failed += 1;
+    }
+
+    // Test getNotes()
+    try{
+      $notes = $this->getNotes(array());
+      echo "PASS: getNotes(), found " . count($notes) . " notes.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getNotes\n";
       $failed += 1;
     }
 
