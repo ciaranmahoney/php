@@ -114,6 +114,37 @@ class Insightly{
     return $this->POST("/v2.1/Emails/")->body($data)->asJSON();
   }
 
+  public function getEvents($options){
+    $request = $this->GET("/v2.1/Events");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function getEvent($id){
+    return $this->GET("/v2.1/Events/$id")->asJSON();
+  }
+
+  public function addEvent($event){
+    if($event == "sample"){
+      return $this->getEvents(array("top" => 1)[0]);
+    }
+
+    $url_path = "/v2.1/Events";
+    if(isset($event->EVENT_ID) && ($event->EVENT_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($event)->asJSON();
+  }
+
+  public function deleteEvent($id){
+    $this->DELETE("/v2.1/Events/$id")->asString();
+    return true;
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -297,6 +328,7 @@ class Insightly{
       $failed += 1;
     }
 
+    // Test getEmails()
     try{
       $emails = $this->getEmails(array("top" => $top));
       echo "PASS: getEmails(), found " . count($emails) . " emails.\n";
@@ -304,6 +336,48 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getEmails()\n";
+      $failed += 1;
+    }
+
+    // Test getEvents()
+    try{
+      $events = $this->getEvents(array("top" => $top));
+      echo "PASS: getEvents(), found " . count($events) . " events.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getEvents()\n";
+      $failed += 1;
+    }
+
+    // Test addEvent()
+    try{
+      $event = (object)array("TITLE" => "Test Event",
+                             "LOCATION" => "Somewhere",
+                             "DETAILS" => "Details",
+                             "START_DATE_UTC" => "2014-07-12 12:00:00",
+                             "END_DATE_UTC" => "2014-07-12 13:00:00",
+                             "OWNER_USER_ID" => $user_id,
+                             "ALL_DAY" => false,
+                             "PUBLICLY_VISIBLE" => true);
+      $event = $this->addEvent($event);
+      echo "PASS: addEvent()\n";
+      $passed += 1;
+
+      // Test deleteEvent()
+      try{
+        $this->deleteEvent($event->EVENT_ID);
+        echo "PASS: deleteEvent()\n";
+        $passed += 1;
+      }
+      catch(Exception $ex){
+        echo "FAIL: deleteEvent()\n";
+        $failed += 1;
+      }
+    }
+    catch(Exception $ex){
+      $event = null;
+      echo "FAIL: addEvent\n";
       $failed += 1;
     }
 
@@ -374,7 +448,7 @@ class InsightlyRequest{
 
     $errno = json_last_error();
     if($errno != JSON_ERROR_NONE){
-      throw new Exception("Error encountered decoding JSON: " . json_last_error_message());
+      throw new Exception("Error encountered decoding JSON: " . json_last_error_msg());
     }
 
     return $data;
@@ -389,6 +463,7 @@ class InsightlyRequest{
     }
 
     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);
+    $this->headers[] = "Content-Type: application/json";
     return $this;
   }
 
