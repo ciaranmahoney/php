@@ -300,6 +300,49 @@ class Insightly{
     return $this->GET("/v2.1/OpportunityStateReasons");
   }
 
+  public function getOrganizations($options){
+    $request = $this->GET("/v2.1/Organisations");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function getOrganization($id){
+    return $this->GET("/v2.1/Organizations/$id")->asJSON();
+  }
+
+  public function addOrganization($organization){
+    if($organization == "sample"){
+      return $this->getOrganizations(array("top" => 1))[0];
+    }
+
+    $url_path = "/v2.1/Organisations";
+    if(isset($organization->ORGANISATION_ID) && ($organization->ORGANISATION_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($organization)->asJSON();
+  }
+
+  public function deleteOrganization($id){
+    $this->DELETE("/v2.1/Organisations/$id")->asString();
+    return true;
+  }
+
+  public function getOrganizationEmails($organization_id){
+    return $this->GET("/v2.1/Organisations/$organization_id/Emails")->asJSON();
+  }
+
+  public function getOrganizationNotes($organization_id){
+    return $this->GET("/v2.1/Organisations/$organization_id/Notes")->asJSON();
+  }
+
+  public function getOrganizationTasks($organization_id){
+    return $this->GET("/v2.1/Organisations/$organization_id/Tasks")->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -650,7 +693,7 @@ class Insightly{
     // Test getOpportunityCategories()
     try{
       $categories = $this->getOpportunityCategories();
-      echo "PASS: getOpportunityCategories(), found " . count($categories) . "categoriesn\n";
+      echo "PASS: getOpportunityCategories(), found " . count($categories) . "categories.\n";
       $passed += 1;
     }
     catch(Exception $ex){
@@ -693,6 +736,82 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getOpportunityStateReasons()\n";
+      $failed += 1;
+    }
+
+    // Test getOrganizations()
+    try{
+      $organizations = $this->getOrganizations(array("top" => $top,
+                                                     "orderby" => "DATE_UPDATED_UTC desc"));
+      echo "PASS: getOrganizations(), found " . count($organizations) . " organizations.\n";
+      $passed += 1;
+
+      if(!empty($organizations)){
+        $organization = $organizations[0];
+        $organization_id = $organization->ORGANISATION_ID;
+
+        // Test getOrganizationEmails()
+        try{
+          $emails = $this->getOrganizationEmails($organization_id);
+          echo "PASS: getOrganizationEmails(), found " . count($emails) . " emails.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOrganizationEmails()\n";
+          $failed += 1;
+        }
+
+        // Test getOrganizationNotes()
+        try{
+          $notes = $this->getOrganizationNotes($organization_id);
+          echo "PASS: getOrganizationNotes(), found " . count($notes) . " notes.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOrganizationNotes()\n";
+          $failed += 1;
+        }
+
+        // Test getOrganizationTasks()
+        try{
+          $tasks = $this->getOrganizationTasks($organization_id);
+          echo "PASS: getOrganizationTasks(), found " . count($tasks) . " tasks.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOrganizationTasks()\n";
+          $failed += 1;
+        }
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: getOgranizations()\n";
+      $failed += 1;
+    }
+
+    // Test addOrganization()
+    try{
+      $organization = new stdClass();
+      $organization->ORGANISATION_NAME = "Foo Corp";
+      $organization->BACKGROUND = "Details";
+
+      $organization = $this->addOrganization($organization);
+      echo "PASS: addOrganization()\n";
+      $passed += 1;
+
+      // Test deleteOrganization()
+      try{
+        $this->deleteOrganization($organization->ORGANISATION_ID);
+        echo "PASS: deleteOrganization()\n";
+        $passed += 1;
+      }
+      catch(Exception $ex){
+        echo "FAIL: deleteOrganization()\n";
+        $failed += 1;
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: addOrganization()\n";
       $failed += 1;
     }
 
