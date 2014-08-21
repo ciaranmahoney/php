@@ -145,6 +145,35 @@ class Insightly{
     return true;
   }
 
+  public function getFileCategories(){
+    return $this->GET("/v2.1/FileCategories")->asJSON();
+  }
+
+  public function getFileCategory($id){
+    return $this->GET("/v2.1/FileCategories/$id")->asJSON();
+  }
+
+  public function addFileCategory($category){
+    if($category == "sample"){
+      return $this->getFileCategories()[0];
+    }
+
+    $url_path = "/v2.1/FileCategories";
+    if(isset($category->CATEGORY_ID)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($category)->asJSON();
+  }
+
+  public function deleteFileCategory($id){
+    $this->DELETE("/v2.1/FileCategories/$id")->asString();
+    return true;
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -378,6 +407,45 @@ class Insightly{
     catch(Exception $ex){
       $event = null;
       echo "FAIL: addEvent\n";
+      $failed += 1;
+    }
+
+    // Test getFileCategories()
+    try{
+      $categories = $this->getFileCategories();
+      echo "PASS: getFileCategories(), found " . count($categories) . " categories\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getFileCategories()\n";
+      $failed += 1;
+    }
+
+    // Test addFileCategory()
+    try{
+      $category = new stdClass();
+      $category->CATEGORY_NAME = "Test Category";
+      $category->ACTIVITY = true;
+      $category->BACKGROUND_COLOR = "000000";
+
+      $category = $this->addFileCategory($category);
+      echo "PASS: addFileCategory()\n";
+      $passed += 1;
+
+      // Test deleteFileCategory()
+      try{
+        $this->deleteFileCategory($category->CATEGORY_ID);
+        echo "PASS: deleteFileCategory()\n";
+        $passed += 1;
+      }
+      catch(Exception $ex){
+        echo "FAIL: deleteFileCategory()\n";
+        $failed += 1;
+      }
+    }
+    catch(Exception $ex){
+      $category = null;
+      echo "FAIL: addFileCategory()\n";
       $failed += 1;
     }
 
