@@ -223,6 +223,83 @@ class Insightly{
     return true;
   }
 
+  public function getOpportunities($options){
+    $request = $this->GET("/v2.1/Opportunities");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function addOpportunity($opportunity){
+    if($opportunity == "sample"){
+      return $this->getOpportunities(array("top" => 1))[0];
+    }
+
+    $url_path = "/v2.1/Opportunities";
+
+    if(isset($opportunity->OPPORTUNITY_ID) && ($opportunity->OPPORTUNITY_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($opportunity)->asJSON();
+  }
+
+  public function deleteOpportunity($id){
+    $this->DELETE("/v2.1/Opportunities/$id")->asString();
+    return true;
+  }
+
+  public function getOpportunityEmails($opportunity_id){
+    return $this->GET("/v2.1/Opportunities/$opportunity_id/Emails")->asJSON();
+  }
+
+  public function getOpportunityNotes($opportunity_id){
+    return $this->GET("/v2.1/Opportunities/$opportunity_id/Notes")->asJSON();
+  }
+
+  public function getOpportunityStateHistory($opportunity_id){
+    return $this->GET("/v2.1/Opportunities/$opportunity_id/StateHistory")->asJSON();
+  }
+
+  public function getOpportunityTasks($opportunity_id){
+    return $this->GET("/v2.1/Opportunities/$opportunity_id/Tasks")->asJSON();
+  }
+
+  public function getOpportunityCategories(){
+    return $this->GET("/v2.1/OpportunityCategories")->asJSON();
+  }
+
+  public function getOpportunityCategory($id){
+    return $this->GET("/v2.1/OpportunityCategories/$id")->asJSON();
+  }
+
+  public function addOpportunityCategory($category){
+    if($category == "sample"){
+      return $this->getOpportunityCategories()[0];
+    }
+
+    $url_path = "/v2.1/OpportunityCategories";
+    if(isset($category->CATEGORY_ID) && ($category->CATEGORY_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($category)->asJSON();
+  }
+
+  public function deleteOpportunityCategory($id){
+    $this->DELETE("/v2.1/OpportunityCategories/$id")->asString();
+    return true;
+  }
+
+  public function getOpportunityStateReasons(){
+    return $this->GET("/v2.1/OpportunityStateReasons");
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -506,6 +583,116 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getNotes\n";
+      $failed += 1;
+    }
+
+    // Test getOpportunities()
+    try{
+      $opportunities = $this->getOpportunities(array("orderby" => "DATE_UPDATED_UTC desc",
+                                                     "top" => $top));
+      echo "PASS: getOpportunities(), found " . count($opportunities) . " opportunities.\n";
+      $passed += 1;
+
+      if(!empty($opportunities)){
+        $opportunity = $opportunities[0];
+        $opportunity_id = $opportunity->OPPORTUNITY_ID;
+
+        // Test getOpportunityEmails()
+        try{
+          $emails = $this->getOpportunityEmails($opportunity_id);
+          echo "PASS: getOpportunityEmails(), found " . count($emails) . " emails.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOpportunityEmails()\n";
+          $failed += 1;
+        }
+
+        // Test getOpportunityNotes()
+        try{
+          $notes = $this->getOpportunityNotes($opportunity_id);
+          echo "PASS: getOpportunityNotes(), found " . count($notes) . " notes.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOpportunityNotes()\n";
+          $failed += 1;
+        }
+
+        // Test getOpportunityTasks()
+        try{
+          $tasks = $this->getOpportunityTasks($opportunity_id);
+          echo "PASS: getOpportunityTasks(), found " . count($tasks) . " tasks.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOpportunityTasks()\n";
+          $failed += 1;
+        }
+
+        // Test getOpportunityStateHistory()
+        try{
+          $states = $this->getOpportunityStateHistory($opportunity_id);
+          echo "PASS: getOpportunityStateHistory(), found " . count($states) . " states in history.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getOpportunityStateHistory()\n";
+          $failed += 1;
+        }
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: getOpportunities()\n";
+      $failed += 1;
+    }
+
+    // Test getOpportunityCategories()
+    try{
+      $categories = $this->getOpportunityCategories();
+      echo "PASS: getOpportunityCategories(), found " . count($categories) . "categoriesn\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getOpportunityCategories()\n";
+      $failed += 1;
+    }
+
+    // Test addOpportunityCategory()
+    try{
+      $category = new stdClass();
+      $category->CATEGORY_NAME="Test Category";
+      $category->ACTIVE = true;
+      $category->BACKGROUND_COLOR = "000000";
+
+      $category = $this->addOpportunityCategory($category);
+      echo "PASS: getOpportunityCategory()\n";
+      $passed += 1;
+
+      // Test deleteOpportunityCategory
+      try{
+        $this->deleteOpportunityCategory($category->CATEGORY_ID);
+        echo "PASS: deleteOpportunityCategory()\n";
+        $passed += 1;
+      }
+      catch(Exception $ex){
+        echo "FAIL: deleteOpportunityCategory()\n";
+        $failed += 1;
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: addOpportunityCategory()\n";
+      $failed += 1;
+    }
+
+    // Test getOpportunityStateReasons()
+    try{
+      $reasons = $this->getOpportunityStateReasons();
+      echo "PASS: getOpportunityStateReasons(), found " . count($reasons) . " reasons.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getOpportunityStateReasons()\n";
       $failed += 1;
     }
 
