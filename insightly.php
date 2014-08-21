@@ -88,6 +88,32 @@ class Insightly{
     return $this->GET("/v2.1/CustomFields/$id")->asJSON();
   }
 
+  public function getEmails($options){
+    $request = $this->GET("/v2.1/Emails");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function getEmail($id){
+    return $this->GET("/v2.1/Emails/$id")->asJSON();
+  }
+
+  public function deleteEmail($id){
+    $this->DELETE("/v2.1/Emails/$id")->asString();
+    return true;
+  }
+
+  public function getEmailComments($email_id){
+    $this->GET("/v2.1/Emails/$email_id/Comments")->asJSON();
+  }
+
+  public function addCommentToEmail($email_id, $body, $owner_user_id){
+    $data = new stdClass();
+    $data->BODY = $body;
+    $data->OWNER_USER_ID = $owner_user_id;
+    return $this->POST("/v2.1/Emails/")->body($data)->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -268,6 +294,16 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getCustomFields()\n";
+      $failed += 1;
+    }
+
+    try{
+      $emails = $this->getEmails(array("top" => $top));
+      echo "PASS: getEmails(), found " . count($emails) . " emails.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getEmails()\n";
       $failed += 1;
     }
 
