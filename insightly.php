@@ -72,8 +72,20 @@ class Insightly{
     return $this->GET("/v2.1/Contacts/$contact_id/Tasks")->asJSON();
   }
 
+  public function getCountries(){
+    return $this->GET("/v2.1/Countries")->asJSON();
+  }
+
   public function getCurrencies(){
     return $this->GET("/v2.1/Currencies")->asJSON();
+  }
+
+  public function getCustomFields(){
+    return $this->GET("/v2.1/CustomFields")->asJSON();
+  }
+
+  public function getCustomField($id){
+    return $this->GET("/v2.1/CustomFields/$id")->asJSON();
   }
 
   public function getUsers(){
@@ -226,6 +238,36 @@ class Insightly{
     catch(Exception $ex){
       $contact = null;
       echo "FAIL: addContact()\n";
+      $failed += 1;
+    }
+
+    try{
+      $countries = $this->getCountries();
+      echo "PASS: getCountries(), found " . count($countries) . " countries.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getCountries()\n";
+      $failed += 1;
+    }
+
+    try{
+      $currencies = $this->getCurrencies();
+      echo "PASS: getCurrencies(), found " . count($currencies) . " currencies\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getCurrencies()\n";
+      $failed += 1;
+    }
+
+    try{
+      $customfields = $this->getCustomFields();
+      echo "PASS: getCustomFields(), found " . count($customfields) . " custom fields.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getCustomFields()\n";
       $failed += 1;
     }
 
