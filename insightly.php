@@ -437,6 +437,54 @@ class Insightly{
     return $this->GET("/v2.1/Tags/$id")->asJSON();
   }
 
+  public function getTasks($options){
+    $request = $this->GET("/v2.1/Tasks");
+    $this->buildODataQuery($request, $options);
+
+    if(isset($options["ids"])){
+      $ids = "";
+      foreach($options["ids"] as $id){
+        $ids .= $id . ",";
+      }
+      $request.queryParam("ids", $ids);
+    }
+
+    return $request->asJSON();
+  }
+
+  public function getTask($id){
+    return $this->GET("/v2.1/Tasks/$id")->asJSON();
+  }
+
+  public function addTask($task){
+    if($task == "sample"){
+      return $this->getTasks(array("top" => 1))[0];
+    }
+
+    $url_path = "/v2.1/Tasks";
+    if(isset($task->TASK_ID) && ($task->TASK_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($task)->asJSON();
+  }
+
+  public function deleteTask($id){
+    $this->DELETE("/v2.1/Tasks/$id")->asString();
+    return true;
+  }
+
+  public function getTaskComments($task_id){
+    return $this->GET("/v2.1/Tasks/$task_id/Comments")->asJSON();
+  }
+
+  public function addTaskComment($task_id, $comment){
+    return $this->POST("/v2.1/Tasks/$task_id/Comments")->body($comment)->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -989,6 +1037,18 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getRelationships()\n";
+      $failed += 1;
+    }
+
+    // Test getTasks()
+    try{
+      $tasks = $this->getTasks(array("top" => $top,
+                                     "orderby" => "DUE_DATE desc"));
+      echo "PASS: getTasks(), found " . count($tasks) . " tasks.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getTasks()\n";
       $failed += 1;
     }
 
