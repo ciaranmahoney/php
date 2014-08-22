@@ -8,7 +8,7 @@
    
    The library is built using PHP standard libraries.
    (no third party tools required, so it will run out of the box
-   on most Python environments).
+   on most PHP environments).
    The wrapper functions return native PHP objects (arrays and objects),
    so working with them is easily done using built in functions. 
    
@@ -101,7 +101,7 @@
    
     IMAGE AND FILE ATTACHMENT MANAGEMENT
    
-    The API calls to manage images and file attachments have not yet been implemented in the Python library. However you can access
+    The API calls to manage images and file attachments have not yet been implemented in the PHP library. However you can access
     these directly via our REST API
    
     ISSUES TO BE AWARE OF
