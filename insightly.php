@@ -485,6 +485,67 @@ class Insightly{
     return $this->POST("/v2.1/Tasks/$task_id/Comments")->body($comment)->asJSON();
   }
 
+  public function getTeams($options = null){
+    $request = $this->GET("/v2.1/Teams");
+    $this->buildODataQuery($request, $options);
+    return $request->asJSON();
+  }
+
+  public function getTeam($id){
+    return $this->GET("/v2.1/Teams/$id")->asJSON();
+  }
+
+  public function addTeam($team){
+    if($team == "sample"){
+      return $this->getTeams(array("top" => 1))[0];
+    }
+
+    $url_path = "/v2.1/Teams";
+    if(isset($team->TEAM_ID) && ($team->TEAM_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->PUT($url_path);
+    }
+
+    return $request->body($team)->asJSON();
+  }
+
+  public function deleteTeam($id){
+    $this->DELETE("/v2.1/Teams/$id")->asString();
+    return true;
+  }
+
+  public function getTeamMembers($team_id){
+    return $this->POST("/v2.1/TeamMembers/teamid=$team_id")->asJSON();
+  }
+
+  public function getTeamMember($id){
+    return $this->POST("/v2.1/TeamMembers/$id")->asJSON();
+  }
+
+  public function addTeamMember($team_member){
+    if($team_member == "sample"){
+      $team_member = new stdClass();
+      $team_member->PERMISSION_ID = 1;
+      $team_member->TEAM_ID = 1;
+      $team_member->MEMBER_USER_ID = 1;
+      $team_member->MEMBER_TEAM_ID = 1;
+      return $team_member;
+    }
+
+    return $this->POST("/v2.1/TeamMembers")->body($team_member)->asJSON();
+  }
+
+  public function updateTeamMember($team_member){
+    return $this->PUT("/v2.1/TeamMembers")->body($team_member)->asJSON();
+  }
+
+  public function deleteTeamMember($id){
+    $this->DELETE("/v2.1/TeamMembers/$id")->asString();
+    return true;
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -1049,6 +1110,33 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getTasks()\n";
+      $failed += 1;
+    }
+
+    // Test getTeams()
+    try{
+      $teams = $this->getTeams();
+      echo "PASS: getTeams(), found " . count($teams) . " teams.\n";
+      $passed += 1;
+
+      if(!empty($teams)){
+        $team = $teams[0];
+        $team_id = $team->TEAM_ID;
+
+        // Test getTeamMembers()
+        try{
+          $team_members = $this->getTeamMembers($team_id);
+          echo "PASS: getTeamMembers(), found " . count($team_members) . " team members.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getTeamMembers()\n";
+          $failed += 1;
+        }
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: getTeams()\n";
       $failed += 1;
     }
 
