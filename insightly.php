@@ -429,6 +429,14 @@ class Insightly{
     return $this->GET("/v2.1/Projects/$project_id/Tasks")->asJSON();
   }
 
+  public function getRelationships(){
+    return $this->GET("/v2.1/Relationships")->asJSON();
+  }
+
+  public function getTags($id){
+    return $this->GET("/v2.1/Tags/$id")->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -970,6 +978,17 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getProjectCategories()\n";
+      $failed += 1;
+    }
+
+    // Test getRelationships
+    try{
+      $relationships = $this->getRelationships();
+      echo "PASS: getRelationships(), found " . count($relationships) . " relationships.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getRelationships()\n";
       $failed += 1;
     }
 
