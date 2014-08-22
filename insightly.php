@@ -359,6 +359,76 @@ class Insightly{
     return $this->GET("/v2.1/PipelineStages/$id")->asJSON();
   }
 
+  public function getProjectCategories(){
+    return $this->GET("/v2.1/ProjectCategories")->asJSON();
+  }
+
+  public function getProjectCategory($id){
+    return $this->GET("/v2.1/ProjectCategories/$id")->asJSON();
+  }
+
+  public function addProjectCategory($category){
+    if($category == "sample"){
+      return $this->getProjectCategories()[0];
+    }
+
+    $url_path = "/v2.1ProjectCategories";
+    if(isset($category->CATEGORY_ID) && ($category->CATEGORY_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($category)->asJSON();
+  }
+
+  public function deleteProjectCategory($id){
+    $this->DELETE("/v2.1/ProjectCategories/$id")->asString();
+    return true;
+  }
+
+  public function getProjects($options){
+    return $this->GET("/v2.1/Projects")->asJSON();
+  }
+
+  public function getProject($id){
+    return $this->GET("/v2.1/Projects/$id")->asJSON();
+  }
+
+  public function addProject($project){
+    if($project == "sample"){
+      return $this->getProjects()[0];
+    }
+
+    $url_path = "/v2.1/Projects";
+    if(isset($project->PROJECT_ID) && ($project->PROJECT_ID > 0)){
+      $request = $this->PUT($url_path);
+    }
+    else{
+      $request = $this->POST($url_path);
+    }
+
+    return $request->body($project)->asJSON();
+  }
+
+  public function deleteProject($id){
+    $this->DELETE("/v2.1/Projects/$id")->asString();
+    return true;
+  }
+
+  public function getProjectEmails($project_id){
+    return $this->GET("/v2.1/Projects/$project_id/Emails")->asJSON();
+  }
+
+  public function getProjectNotes($project_id){
+    return $this->GET("/v2.1/Projects/$project_id/Notes")->asJSON();
+  }
+
+  public function getProjectTasks($project_id){
+    return $this->GET("/v2.1/Projects/$project_id/Tasks")->asJSON();
+  }
+
   public function getUsers(){
     return $this->GET("/v2.1/Users")->asJSON();
   }
@@ -831,6 +901,7 @@ class Insightly{
       $failed += 1;
     }
 
+    // Test getPipelines()
     try{
       $pipelines = $this->getPipelines();
       echo "PASS: getPipelines(), found " . count($pipelines) . " pipelines\n";
@@ -838,6 +909,67 @@ class Insightly{
     }
     catch(Exception $ex){
       echo "FAIL: getPilelines()\n";
+      $failed += 1;
+    }
+
+    // Test getProjects()
+    try{
+      $projects = $this->getProjects(array("top" => $top,
+                                           "orderby" => "DATE_UPDATED_UTC desc"));
+      echo "PASS: getProjects(), found " . count($projects) . " projects.\n";
+      $passed += 1;
+
+      if(!empty($projects)){
+        $project = $projects[0];
+        $project_id = $project->PROJECT_ID;
+
+        // Test getProjectEmails()
+        try{
+          $emails = $this->getProjectEmails($project_id);
+          echo "PASS: getProjectEmails(), found " . count($emails) . " emails.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getProjectEmails()\n";
+          $failed += 1;
+        }
+
+        // Test getProjectNotes()
+        try{
+          $notes = $this->getProjectNotes($project_id);
+          echo "PASS: getProjectNotes(), found " . count($notes) . " notes.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getProjectNotes()\n";
+          $failed += 1;
+        }
+
+        // Test getProjectTasks()
+        try{
+          $tasks = $this->getProjectTasks($project_id);
+          echo "PASS: getProjectTasks(), found " . count($tasks) . " tasks.\n";
+          $passed += 1;
+        }
+        catch(Exception $ex){
+          echo "FAIL: getProjectTasks()\n";
+          $failed += 1;
+        }
+      }
+    }
+    catch(Exception $ex){
+      echo "FAIL: getProjects()\n";
+      $failed += 1;
+    }
+
+    // Test getProjectCategories()
+    try{
+      $categories = $this->getProjectCategories();
+      echo "PASS: getProjectCategories(), found " . count($categories) . " categories.\n";
+      $passed += 1;
+    }
+    catch(Exception $ex){
+      echo "FAIL: getProjectCategories()\n";
       $failed += 1;
     }
 
