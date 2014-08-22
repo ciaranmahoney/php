@@ -1,4 +1,155 @@
 <?php
+
+/**
+   Insightly PHP library for Insightly API
+   
+   This library provides user friendly access to the version 2.1 REST API
+   for Insightly.
+   
+   The library is built using PHP standard libraries.
+   (no third party tools required, so it will run out of the box
+   on most Python environments).
+   The wrapper functions return native PHP objects (arrays and objects),
+   so working with them is easily done using built in functions. 
+   
+    USAGE:
+   
+    Simply add insightly.php to your PHP include path,
+    then do the following to run a test suite:
+   
+    require("insightly.php");
+    $i = new Insightly('your API key');
+    $i->test();
+   
+    This will run an automatic test suite against your Insightly account.
+    If the methods you need all pass, you're good to go!
+
+    For convenience, you can also run test.php from the command line:
+
+    php test.php <your-api-key>
+
+    This will run the test suite as well.
+   
+    If you are working with very large recordsets,
+    you should use ODATA filters to access data in smaller chunks.
+    This is a good idea in general to minimize server response times.
+   
+    BASIC USE PATTERNS:
+   
+    CREATE/UPDATE ACTIONS
+   
+    These methods expect an object containing valid data fields for the object.
+    They will return a dictionary containing the object
+    as stored on the server (if successful)
+    or raise an exception if the create/update request fails.
+    You indicate whether you want to create a new item
+    by setting the record id to 0 or omitting it.
+   
+    To obtain sample objects, you can do the following:
+   
+    $contact = $i->addContact('sample');
+    $event = $i->addEvent('sample');
+    $organization = $i->addOrganization('sample');
+    $project = $i->addProject('sample');
+   
+    This will return a random item from your account,
+    so you can see what fields are required,
+    along with representative field values.
+   
+    SEARCH ACTIONS
+   
+    These methods return a list of dictionaries containing the matching items.
+    For example to request a list of all contacts, you call:
+
+    $contacts = $i->getContacts()
+   
+    SEARCH ACTIONS USING ODATA
+   
+    Search methods recognize top, skip, orderby and filters parameters,
+    which you can use to page, order and filter recordsets.
+    These are passed via an associative array:
+
+    // get the first 200 contacts   
+    $contacts = $i->getContacts(array("top" => 200));
+
+    // get the first 200 contacts, in first name descending order
+    $contacts = $i->getContacts(array("orderby" => 'FIRST_NAME desc', "top" => 200));
+
+    // get 200 records, after skipping the first 200 records
+    $contacts = $i->getContacts(array("top" => 200, "skip" => 200));
+
+    // get contacts where FIRST_NAME='Brian'
+    $contacts = $i->getContacts(array("filters" => array('FIRST_NAME=\'Brian\'')));
+   
+    IMPORTANT NOTE: when using OData filters,
+    be sure to include escaped quotes around the search term.
+    Otherwise you will get a 400 (bad request) error.
+   
+    These methods will raise an exception if the lookup fails,
+    or return a (possibly empty) list of objects if successful.
+   
+    READ ACTIONS (SINGLE ITEM)
+   
+    These methods will return a single object containing the requested item's properties.
+
+    $contact = $i->getContact(123456);
+   
+    DELETE ACTIONS
+   
+    These methods will return True if successful, or raise an exception.
+    e.g. $success = $i->deleteContact(123456)
+   
+    IMAGE AND FILE ATTACHMENT MANAGEMENT
+   
+    The API calls to manage images and file attachments have not yet been implemented in the Python library. However you can access
+    these directly via our REST API
+   
+    ISSUES TO BE AWARE OF
+   
+    This library makes it easy to integrate with Insightly,
+    and by automating HTTPS requests for you,
+    eliminates the most common causes of user issues.
+    That said, the service is picky about rejecting requests
+    that do not have required fields, or have invalid field values
+    (such as an invalid USER_ID).
+    When this happens, you'll get a 400 (bad request) error.
+    Your best bet at this point is to consult the
+    API documentation and look at the required request data.
+   
+    Write/update methods also have a dummy feature
+    that returns sample objects that you can use as a starting point.
+    For example, to obtain a sample task object, just call:
+   
+    $task = $i->addTask('sample');
+   
+    This will return one of the tasks from your Insightly account,
+    so you can get a sense of the fields and values used.
+   
+    If you are working with large recordsets,
+    we strongly recommend that you use ODATA functions,
+    such as top and skip to page through recordsets
+    rather than trying to fetch entire recordsets in one go.
+    This both improves client/server communication,
+    but also minimizes memory requirements on your end.
+    
+    TROUBLESHOOTING TIPS
+    
+    One of the main issues API users run into during write/update operations
+    is a 400 error (bad request) due to missing required fields.
+    If you are unclear about what the server is expecting,
+    a good way to troubleshoot this is to do the following:
+    
+    * Using the web interface, create the object in question
+      (contact, project, team, etc), and add sample data and child elements to it
+    * Use the corresponding getNNNN() method to retrieve this object via the web API
+    * Inspect the object's contents and structure
+    
+    Read operations via the API are generally quite straightforward,
+    so if you get struck on a write operation, this is a good workaround,
+    as you are probably just missing a required field
+    or using an invalid element ID when referring
+    to something such as a link to a contact.
+*/
 class Insightly{
   private $apikey;
 
