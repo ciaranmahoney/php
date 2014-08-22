@@ -157,7 +157,7 @@ class Insightly{
     $this->apikey = $apikey;
   }
 
-  public function getContacts($options){
+  public function getContacts($options = null){
     $email = @$options["email"];
     $tag = @$options["tag"];
     $ids = @$options["ids"];
@@ -239,7 +239,7 @@ class Insightly{
     return $this->GET("/v2.1/CustomFields/$id")->asJSON();
   }
 
-  public function getEmails($options){
+  public function getEmails($options = null){
     $request = $this->GET("/v2.1/Emails");
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
@@ -265,7 +265,7 @@ class Insightly{
     return $this->POST("/v2.1/Emails/")->body($data)->asJSON();
   }
 
-  public function getEvents($options){
+  public function getEvents($options = null){
     $request = $this->GET("/v2.1/Events");
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
@@ -325,7 +325,7 @@ class Insightly{
     return true;
   }
 
-  public function getNotes($options){
+  public function getNotes($options = null){
     $request = $this->GET("/v2.1/Notes");
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
@@ -374,7 +374,7 @@ class Insightly{
     return true;
   }
 
-  public function getOpportunities($options){
+  public function getOpportunities($options = null){
     $request = $this->GET("/v2.1/Opportunities");
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
@@ -451,7 +451,7 @@ class Insightly{
     return $this->GET("/v2.1/OpportunityStateReasons");
   }
 
-  public function getOrganizations($options){
+  public function getOrganizations($options = null){
     $request = $this->GET("/v2.1/Organisations");
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
@@ -539,7 +539,7 @@ class Insightly{
     return true;
   }
 
-  public function getProjects($options){
+  public function getProjects($options = null){
     return $this->GET("/v2.1/Projects")->asJSON();
   }
 
@@ -588,7 +588,7 @@ class Insightly{
     return $this->GET("/v2.1/Tags/$id")->asJSON();
   }
 
-  public function getTasks($options){
+  public function getTasks($options = null){
     $request = $this->GET("/v2.1/Tasks");
     $this->buildODataQuery($request, $options);
 
