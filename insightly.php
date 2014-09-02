@@ -277,7 +277,7 @@ class Insightly{
 
   public function addEvent($event){
     if($event == "sample"){
-      return $this->getEvents(array("top" => 1)[0]);
+      return $this->getEvents(array("top" => 1))[0];
     }
 
     $url_path = "/v2.1/Events";
