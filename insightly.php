@@ -189,7 +189,7 @@ class Insightly{
   }
 
   public function getContact($id){
-    return $this->GET("/v2.1/Contacts/" . $id);
+    return $this->GET("/v2.1/Contacts/" . $id)->asJSON();
   }
 
   public function addContact($contact){
@@ -448,7 +448,7 @@ class Insightly{
   }
 
   public function getOpportunityStateReasons(){
-    return $this->GET("/v2.1/OpportunityStateReasons");
+    return $this->GET("/v2.1/OpportunityStateReasons")->asJSON();
   }
 
   public function getOrganizations($options = null){
@@ -656,7 +656,7 @@ class Insightly{
       $request = $this->PUT($url_path);
     }
     else{
-      $request = $this->PUT($url_path);
+      $request = $this->POST($url_path);
     }
 
     return $request->body($team)->asJSON();
