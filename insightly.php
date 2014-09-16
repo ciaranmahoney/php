@@ -1324,6 +1324,7 @@ class InsightlyRequest{
       break;
     case "PUT":
       $this->method("PUT");
+      break;
     default: throw new Exception('Invalid HTTP method: ' . $method);
     }
 
