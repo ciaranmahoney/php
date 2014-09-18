@@ -379,6 +379,10 @@ class Insightly{
     $this->buildODataQuery($request, $options);
     return $request->asJSON();
   }
+  
+   public function getOpportunity($id){
+    return $this->GET("/v2.1/Opportunities/" . $id)->asJSON();
+  }
 
   public function addOpportunity($opportunity){
     if($opportunity == "sample"){
