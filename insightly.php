@@ -721,8 +721,8 @@ class Insightly{
       $request->queryParam('$orderby', $orderby);
     }
     if($filters != null){
-      foreach($filters as $filter){
-        $request->queryParam("$filter", $filter);
+      foreach($filters as $filter => $filterValue){
+        $request->queryParam("$filter", $filterValue);
       }
     }
 
