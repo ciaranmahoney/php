@@ -458,7 +458,7 @@ class Insightly{
   }
 
   public function getOrganization($id){
-    return $this->GET("/v2.1/Organizations/$id")->asJSON();
+    return $this->GET("/v2.1/Organisations/$id")->asJSON();
   }
 
   public function addOrganization($organization){
