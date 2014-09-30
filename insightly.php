@@ -380,6 +380,10 @@ class Insightly{
     return $request->asJSON();
   }
 
+  public function getOpportunity($id){
+    return $this->GET("/v2.1/Opportunities/" . $id)->asJSON();
+  }
+
   public function addOpportunity($opportunity){
     if($opportunity == "sample"){
       return $this->getOpportunities(array("top" => 1))[0];
