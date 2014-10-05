@@ -348,7 +348,7 @@ class Insightly{
       $request = $this->POST($url_path);
     }
 
-    return $request->body($notes)->asJSON();
+    return $request->body($note)->asJSON();
   }
 
   public function getNoteComments($note_id){
