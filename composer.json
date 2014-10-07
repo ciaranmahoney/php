@@ -1,0 +1,15 @@
+{
+    "name": "insightly/insightly-php",
+    "description": "This library provides user friendly access to the version 2.1 REST API for Insightly",
+    "version": "0.1",
+    "minimum-stability": "dev",
+
+    "require": {
+        "php": ">=5.4",
+        "ext-curl": "*"
+    },
+
+    "autoload": {
+        "classmap": ["insightly.php"]
+    }
+}
