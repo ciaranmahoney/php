@@ -544,7 +544,30 @@ class Insightly{
   }
 
   public function getProjects($options = null){
-    return $this->GET("/v2.1/Projects")->asJSON();
+    $tag = @$options["tag"];
+    $ids = @$options["ids"];
+
+    $request = $this->GET("/v2.1/Projects");
+
+    // handle standard OData options
+    $this->buildODataQuery($request, $options);
+
+    // handle other options
+    if($tag != null){
+      $request->queryParam("tag", $tag);
+    }
+    if($ids != null){
+      $s = "";
+      foreach($ids as $key => $value){
+        if($key > 0){
+          $s = $s . ",";
+        }
+        $s = $s . $value;
+      }
+      $request->queryParam("ids", $s);
+    }
+
+    return $request->asJSON();
   }
 
   public function getProject($id){
