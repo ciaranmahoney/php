@@ -748,8 +748,11 @@ class Insightly{
       $request->queryParam('$orderby', $orderby);
     }
     if($filters != null){
-      foreach($filters as $filter => $filterValue){
-        $request->queryParam("$filter", $filterValue);
+      foreach($filters as $filter){
+        $filterValue = str_replace(array('=', '>', '<'),
+                                   array(' eq ', ' gt ', ' lt '),
+                                   $filter);
+        $request->queryParam('$filter', $filterValue);
       }
     }
 
