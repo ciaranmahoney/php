@@ -174,9 +174,9 @@ class Insightly{
    * @link https://api.insight.ly/v2.1/Help/Api/GET-Contacts_ids_email_tag
    */
   public function getContacts($options = null){
-    $email = @$options["email"];
-    $tag = @$options["tag"];
-    $ids = @$options["ids"];
+    $email = isset($options["email"]) ? $options["email"] : null;
+    $tag = isset($options["tag"]) ? $options["tag"] : null;
+    $ids = isset($options["ids"]) ? $options["ids"] : null;
 
     $request = $this->GET("/v2.1/Contacts");
 
@@ -574,9 +574,9 @@ class Insightly{
   }
 
   public function getProjects($options = null){
-    $tag = @$options["tag"];
-    $ids = @$options["ids"];
-
+    $tag = isset($options["tag"]) ? $options["tag"] : null;
+    $ids = isset($options["ids"]) ? $options["ids"] : null;
+  	
     $request = $this->GET("/v2.1/Projects");
 
     // handle standard OData options
@@ -762,11 +762,25 @@ class Insightly{
     return $this->GET("/v2.1/Users/" . $id)->asJSON();
   }
 
+  /**
+   * Add OData query filters to a request
+   * 
+   * Accepted options:
+   * 	- top
+   * 	- skip
+   * 	- orderby
+   * 	- an array of filters 
+   * 
+   * @param InsightlyRequest $request
+   * @param array $options
+   * @return InsightlyRequest
+   * @link http://www.odata.org/documentation/odata-version-2-0/uri-conventions/
+   */
   private function buildODataQuery($request, $options){
-    $top = @$options["top"];
-    $skip = @$options["skip"];
-    $orderby = @$options["orderby"];
-    $filters = @$options["filters"];
+  	$top = isset($options["top"]) ? $options["top"] : null;
+  	$skip = isset($options["skip"]) ? $options["skip"] : null;
+  	$orderby = isset($options["orderby"]) ? $options["orderby"] : null;
+  	$filters = isset($options["filters"]) ? $options["filters"] : null;
 
     if($top != null){
       $request->queryParam('$top', $top);
