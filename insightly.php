@@ -1,5 +1,4 @@
 <?php
-
 /**
    Insightly PHP library for Insightly API
    
@@ -151,12 +150,29 @@
     to something such as a link to a contact.
 */
 class Insightly{
+  /**
+   * API key
+   * 
+   * @var string
+   */
   private $apikey;
 
+  /**
+   * Class constructor accepting an API key
+   * 
+   * @param string $apikey
+   */
   public function __construct($apikey){
     $this->apikey = $apikey;
   }
 
+  /**
+   * Gets a list of contacts 
+   * 
+   * @param array $options
+   * @return mixed
+   * @link https://api.insight.ly/v2.1/Help/Api/GET-Contacts_ids_email_tag
+   */
   public function getContacts($options = null){
     $email = @$options["email"];
     $tag = @$options["tag"];
@@ -188,10 +204,24 @@ class Insightly{
     return $request->asJSON();
   }
 
+  /**
+   * Gets a contact
+   * 
+   * @param int $id
+   * @return mixed
+   * @link https://api.insight.ly/v2.1/Help/Api/GET-Contacts-id
+   */
   public function getContact($id){
     return $this->GET("/v2.1/Contacts/" . $id)->asJSON();
   }
 
+  /**
+   * Adds a contact
+   * 
+   * @param stdClass $contact
+   * @return mixed
+   * @link https://api.insight.ly/v2.1/Help/Api/POST-Contacts
+   */
   public function addContact($contact){
     $url_path = "/v2.1/Contacts";
     $request = null;
@@ -759,22 +789,52 @@ class Insightly{
     return $request;
   }
 
+  /**
+   * Create GET request
+   * 
+   * @param string $url_path
+   * @return InsightlyRequest
+   */
   private function GET($url_path){
     return new InsightlyRequest("GET", $this->apikey, $url_path);
   }
 
+  /**
+   * Create PUT request
+   * 
+   * @param string $url_path
+   * @return InsightlyRequest
+   */
   private function PUT($url_path){
     return new InsightlyRequest("PUT", $this->apikey, $url_path);
   }
 
+  /**
+   * Create POST request
+   * 
+   * @param string $url_path
+   * @return InsightlyRequest
+   */
   private function POST($url_path){
     return new InsightlyRequest("POST", $this->apikey, $url_path);
   }
 
+  /**
+   * Create DELETE request
+   * 
+   * @param string $url_path
+   * @return InsightlyRequest
+   */
   private function DELETE($url_path){
     return new InsightlyRequest("DELETE", $this->apikey, $url_path);
   }
 
+  /**
+   * Test all API library funtions
+   * 
+   * @param int $top (Number of results in some requests)
+   * @throws Exception
+   */
   public function test($top=null){
     echo "Test API .....\n";
 
@@ -1327,14 +1387,67 @@ class Insightly{
   }
 }
 
+/**
+ * API Requests class
+ * 
+ * Helper class for executing REST requests to the Insightly API.
+ * 
+ * Usage:
+ * 	- Instanciate: $request = new InsightlyRequest('GET', $apikey, 'create.../)
+ *  - Execute: $request->toString();
+ *  - Or implicitly execute: $request->asJSON();
+ */
 class InsightlyRequest{
+  /**
+   * API URL
+   * 
+   * @var string
+   */
   const URL_BASE = 'https://api.insight.ly';
+  
+  /**
+   * CURL resource
+   * 
+   * @var resource
+   */
   private $curl;
+  
+  /**
+   * URL path outside the base URL
+   * 
+   * @var string
+   */
   private $url_path;
+  
+  /**
+   * Request headers
+   * 
+   * @var array
+   */
   private $headers;
+  
+  /**
+   * Request parameters
+   * 
+   * @var array
+   */
   private $querystrings;
+  
+  /**
+   * Response body
+   * 
+   * @var string
+   */
   private $body;
 
+  /**
+   * Request initialisation
+   * 
+   * @param string $method (GET|DELETE|POST|PUT)
+   * @param string $apikey
+   * @param string $url_path
+   * @throws Exception
+   */
   function __construct($method, $apikey, $url_path){
     $this->curl = curl_init();
     $this->url_path = $url_path;
@@ -1362,6 +1475,12 @@ class InsightlyRequest{
     curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
   }
 
+  /**
+   * Get executed request response
+   * 
+   * @throws Exception
+   * @return string
+   */
   public function asString(){
     // This may be useful for debugging
     //curl_setopt($this->curl, CURLOPT_VERBOSE, true);
@@ -1384,6 +1503,12 @@ class InsightlyRequest{
     return $response;
   }
 
+  /**
+   * Return decoded JSON response
+   * 
+   * @throws Exception
+   * @return mixed
+   */
   public function asJSON(){
     $data = json_decode($this->asString());
 
@@ -1395,6 +1520,13 @@ class InsightlyRequest{
     return $data;
   }
 
+  /**
+   * Add data to the current request
+   * 
+   * @param mixed $obj
+   * @throws Exception
+   * @return InsightlyRequest
+   */
   public function body($obj){
     $data = json_encode($obj);
 
@@ -1408,11 +1540,24 @@ class InsightlyRequest{
     return $this;
   }
 
+  /**
+   * Set request method
+   * 
+   * @param string $method
+   * @return InsightlyRequest
+   */
   private function method($method){
     curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
     return $this;
   }
 
+  /**
+   * Add query parameter to the current request
+   * 
+   * @param string $name
+   * @param mixed $value
+   * @return InsightlyRequest
+   */
   public function queryParam($name, $value){
     // build the query string for this name/value pair
     $querystring = http_build_query(array($name => $value));
@@ -1423,6 +1568,11 @@ class InsightlyRequest{
     return $this;
   }
 
+  /**
+   * Build query string for the current request
+   * 
+   * @return string
+   */
   private function buildQueryString(){
     if(count($this->querystrings) == 0){
       return "";
@@ -1441,4 +1591,3 @@ class InsightlyRequest{
     }
   }
 }
-?>
