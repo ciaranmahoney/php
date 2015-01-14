@@ -307,7 +307,8 @@ class Insightly{
 
   public function addEvent($event){
     if($event == "sample"){
-      return $this->getEvents(array("top" => 1))[0];
+      $return = $this->getEvents(array("top" => 1));
+      return $return[0];
     }
 
     $url_path = "/v2.1/Events";
@@ -336,7 +337,8 @@ class Insightly{
 
   public function addFileCategory($category){
     if($category == "sample"){
-      return $this->getFileCategories()[0];
+      $return = $this->getFileCategories();
+      return $return[0];
     }
 
     $url_path = "/v2.1/FileCategories";
@@ -367,7 +369,9 @@ class Insightly{
 
   public function addNote($note){
     if($note == "sample"){
-      return $this->getNotes(array("top" => 1))[0];
+      $return = $this->getNotes(array("top" => 1));
+      return $return[0];
+
     }
 
     $url_path = "/v2.1/Notes";
@@ -416,7 +420,8 @@ class Insightly{
 
   public function addOpportunity($opportunity){
     if($opportunity == "sample"){
-      return $this->getOpportunities(array("top" => 1))[0];
+      $return = $this->getOpportunities(array("top" => 1));
+      return $return[0];
     }
 
     $url_path = "/v2.1/Opportunities";
@@ -462,7 +467,8 @@ class Insightly{
 
   public function addOpportunityCategory($category){
     if($category == "sample"){
-      return $this->getOpportunityCategories()[0];
+      $return = $this->getOpportunityCategories();
+      return $return[0];
     }
 
     $url_path = "/v2.1/OpportunityCategories";
@@ -497,7 +503,8 @@ class Insightly{
 
   public function addOrganization($organization){
     if($organization == "sample"){
-      return $this->getOrganizations(array("top" => 1))[0];
+      $return = $this->getOrganizations(array("top" => 1));
+      return $return[0];
     }
 
     $url_path = "/v2.1/Organisations";
@@ -554,7 +561,8 @@ class Insightly{
 
   public function addProjectCategory($category){
     if($category == "sample"){
-      return $this->getProjectCategories()[0];
+      $return = $this->getProjectCategoriest();
+      return $return[0];
     }
 
     $url_path = "/v2.1ProjectCategories";
@@ -606,7 +614,9 @@ class Insightly{
 
   public function addProject($project){
     if($project == "sample"){
-      return $this->getProjects()[0];
+      $return = $this->getProjects();
+      return $return[0];
+
     }
 
     $url_path = "/v2.1/Projects";
@@ -666,7 +676,8 @@ class Insightly{
 
   public function addTask($task){
     if($task == "sample"){
-      return $this->getTasks(array("top" => 1))[0];
+      $return = $this->getTasks(array("top" => 1));
+      return $return[0];
     }
 
     $url_path = "/v2.1/Tasks";
@@ -705,7 +716,8 @@ class Insightly{
 
   public function addTeam($team){
     if($team == "sample"){
-      return $this->getTeams(array("top" => 1))[0];
+      $return = $this->getTeams(array("top" => 1));
+      return $return[0];
     }
 
     $url_path = "/v2.1/Teams";
