@@ -3,6 +3,8 @@ Php client library for Insightly web API (v2.1)
 
 The Insightly PHP SDK enables PHP developers to quickly integrate their applications with the Insightly REST API (version 2.1).
 
+NOTE: this SDK currently only works with version 2.1 of the Insightly API. To use version 2.2, you'll need to modify this library, or you can use Swagger (www.swagger.io) to auto-generate an SDK (it can generate SDKs for over a dozen different target languages).
+
 NOTE: works best with PHP version 5.5.x, some users have reported issues with parse errors using older versions of PHP.
 
 The library handles low level communication, authentication,
