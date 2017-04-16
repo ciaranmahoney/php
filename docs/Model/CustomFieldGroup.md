@@ -1,0 +1,13 @@
+# CustomFieldGroup
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**group_id** | **int** |  | [optional] 
+**group_name** | **string** |  | [optional] 
+**group_for** | **string** |  | [optional] 
+**group_order** | **int** |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
