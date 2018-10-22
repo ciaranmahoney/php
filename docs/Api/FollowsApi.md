@@ -1,6 +1,6 @@
 # Swagger\Client\FollowsApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **getFollows**
-> \Swagger\Client\Model\UserFollow[] getFollows($record_type, $skip, $top, $count_total)
+> object[] getFollows($authorization, $record_type, $skip, $top, $count_total)
 
 Gets a list of followed records for the user
 
@@ -17,14 +17,19 @@ Gets a list of followed records for the user
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\FollowsApi();
+$apiInstance = new Swagger\Client\Api\FollowsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
 $record_type = "record_type_example"; // string | Optional, filters followed records by a given record type.
 $skip = 56; // int | Optional, number of records to skip.
 $top = 56; // int | Optional, maximum number of records to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getFollows($record_type, $skip, $top, $count_total);
+    $result = $apiInstance->getFollows($authorization, $record_type, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling FollowsApi->getFollows: ', $e->getMessage(), PHP_EOL;
@@ -36,6 +41,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
  **record_type** | **string**| Optional, filters followed records by a given record type. | [optional]
  **skip** | **int**| Optional, number of records to skip. | [optional]
  **top** | **int**| Optional, maximum number of records to return in the response. | [optional]
@@ -43,7 +49,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\Swagger\Client\Model\UserFollow[]**](../Model/UserFollow.md)
+**object[]**
 
 ### Authorization
 

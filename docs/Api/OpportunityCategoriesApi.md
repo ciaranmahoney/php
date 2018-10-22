@@ -1,6 +1,6 @@
 # Swagger\Client\OpportunityCategoriesApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **addOpportunityCategory**
-> \Swagger\Client\Model\Category addOpportunityCategory($category)
+> \Swagger\Client\Model\Category addOpportunityCategory($category, $authorization)
 
 Adds an Opportunity Category
 
@@ -23,11 +23,16 @@ This endpoint is used to create a new opportunity category. This endpoint is onl
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityCategoriesApi();
+$apiInstance = new Swagger\Client\Api\OpportunityCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $category = new \Swagger\Client\Model\APICategory(); // \Swagger\Client\Model\APICategory | The Opportunity Category to add (just include JSON object as request body)
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->addOpportunityCategory($category);
+    $result = $apiInstance->addOpportunityCategory($category, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityCategoriesApi->addOpportunityCategory: ', $e->getMessage(), PHP_EOL;
@@ -39,7 +44,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **category** | [**\Swagger\Client\Model\APICategory**](../Model/\Swagger\Client\Model\APICategory.md)| The Opportunity Category to add (just include JSON object as request body) |
+ **category** | [**\Swagger\Client\Model\APICategory**](../Model/APICategory.md)| The Opportunity Category to add (just include JSON object as request body) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -57,7 +63,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteOpportunityCategory**
-> deleteOpportunityCategory($id)
+> deleteOpportunityCategory($id, $authorization)
 
 Deactivates an Opportunity Category
 
@@ -68,11 +74,16 @@ The endpoint is used to deactivate an existing opportunity category. This endpoi
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityCategoriesApi();
+$apiInstance = new Swagger\Client\Api\OpportunityCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | An Opportunity Category's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->deleteOpportunityCategory($id);
+    $apiInstance->deleteOpportunityCategory($id, $authorization);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityCategoriesApi->deleteOpportunityCategory: ', $e->getMessage(), PHP_EOL;
 }
@@ -84,6 +95,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| An Opportunity Category&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -101,7 +113,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getOpportunityCategories**
-> \Swagger\Client\Model\Category[] getOpportunityCategories($skip, $top, $count_total)
+> object[] getOpportunityCategories($authorization, $skip, $top, $count_total)
 
 Gets a list of Opportunity Categories
 
@@ -112,13 +124,18 @@ This read only endpoint returns a list of opportunity categories set up for the 
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityCategoriesApi();
+$apiInstance = new Swagger\Client\Api\OpportunityCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
 $skip = 56; // int | Optional, number of categories to skip.
 $top = 56; // int | Optional, maximum number of categories to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getOpportunityCategories($skip, $top, $count_total);
+    $result = $apiInstance->getOpportunityCategories($authorization, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityCategoriesApi->getOpportunityCategories: ', $e->getMessage(), PHP_EOL;
@@ -130,13 +147,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
  **skip** | **int**| Optional, number of categories to skip. | [optional]
  **top** | **int**| Optional, maximum number of categories to return in the response. | [optional]
  **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\Category[]**](../Model/Category.md)
+**object[]**
 
 ### Authorization
 
@@ -150,7 +168,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getOpportunityCategory**
-> \Swagger\Client\Model\Category getOpportunityCategory($id)
+> \Swagger\Client\Model\Category getOpportunityCategory($id, $authorization)
 
 Gets an Opportunity Category
 
@@ -161,11 +179,16 @@ This endpoint returns the graph for a specific opportunity category
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityCategoriesApi();
+$apiInstance = new Swagger\Client\Api\OpportunityCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | An Opportunity Category's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->getOpportunityCategory($id);
+    $result = $apiInstance->getOpportunityCategory($id, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityCategoriesApi->getOpportunityCategory: ', $e->getMessage(), PHP_EOL;
@@ -178,6 +201,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| An Opportunity Category&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -195,7 +219,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateOpportunityCategory**
-> \Swagger\Client\Model\Category updateOpportunityCategory($category)
+> \Swagger\Client\Model\Category updateOpportunityCategory($category, $authorization)
 
 Updates an Opportunity Category
 
@@ -206,11 +230,16 @@ This endpoint is used to update an existing opportunity category (for example, t
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityCategoriesApi();
+$apiInstance = new Swagger\Client\Api\OpportunityCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $category = new \Swagger\Client\Model\APICategory(); // \Swagger\Client\Model\APICategory | An Opportunity Category (just include JSON object as request body)
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->updateOpportunityCategory($category);
+    $result = $apiInstance->updateOpportunityCategory($category, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityCategoriesApi->updateOpportunityCategory: ', $e->getMessage(), PHP_EOL;
@@ -222,7 +251,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **category** | [**\Swagger\Client\Model\APICategory**](../Model/\Swagger\Client\Model\APICategory.md)| An Opportunity Category (just include JSON object as request body) |
+ **category** | [**\Swagger\Client\Model\APICategory**](../Model/APICategory.md)| An Opportunity Category (just include JSON object as request body) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 

@@ -1,6 +1,6 @@
 # Swagger\Client\TaskCategoriesApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **addTaskCategory**
-> \Swagger\Client\Model\Category addTaskCategory($category)
+> \Swagger\Client\Model\Category addTaskCategory($category, $authorization)
 
 Adds a Task Category
 
@@ -23,11 +23,16 @@ This endpoint is used to create a new task category. This endpoint is only acces
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\TaskCategoriesApi();
+$apiInstance = new Swagger\Client\Api\TaskCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $category = new \Swagger\Client\Model\APICategory(); // \Swagger\Client\Model\APICategory | The Task Category to add (just include JSON object as request body)
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->addTaskCategory($category);
+    $result = $apiInstance->addTaskCategory($category, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TaskCategoriesApi->addTaskCategory: ', $e->getMessage(), PHP_EOL;
@@ -39,7 +44,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **category** | [**\Swagger\Client\Model\APICategory**](../Model/\Swagger\Client\Model\APICategory.md)| The Task Category to add (just include JSON object as request body) |
+ **category** | [**\Swagger\Client\Model\APICategory**](../Model/APICategory.md)| The Task Category to add (just include JSON object as request body) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -57,7 +63,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteTaskCategory**
-> deleteTaskCategory($id)
+> deleteTaskCategory($id, $authorization)
 
 Deactivates a Task Category
 
@@ -68,11 +74,16 @@ This endpoint is used to deactivate a task category. This endpoint is only acces
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\TaskCategoriesApi();
+$apiInstance = new Swagger\Client\Api\TaskCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | A Task Category's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->deleteTaskCategory($id);
+    $apiInstance->deleteTaskCategory($id, $authorization);
 } catch (Exception $e) {
     echo 'Exception when calling TaskCategoriesApi->deleteTaskCategory: ', $e->getMessage(), PHP_EOL;
 }
@@ -84,6 +95,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| A Task Category&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -101,7 +113,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getTaskCategories**
-> \Swagger\Client\Model\Category[] getTaskCategories($skip, $top, $count_total)
+> object[] getTaskCategories($authorization, $skip, $top, $count_total)
 
 Gets a list of Task Categories
 
@@ -112,13 +124,18 @@ This read only endpoint returns a list of the task categories set up for the Ins
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\TaskCategoriesApi();
+$apiInstance = new Swagger\Client\Api\TaskCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
 $skip = 56; // int | Optional, number of records to skip.
 $top = 56; // int | Optional, maximum number of records to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getTaskCategories($skip, $top, $count_total);
+    $result = $apiInstance->getTaskCategories($authorization, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TaskCategoriesApi->getTaskCategories: ', $e->getMessage(), PHP_EOL;
@@ -130,13 +147,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
  **skip** | **int**| Optional, number of records to skip. | [optional]
  **top** | **int**| Optional, maximum number of records to return in the response. | [optional]
  **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\Category[]**](../Model/Category.md)
+**object[]**
 
 ### Authorization
 
@@ -150,7 +168,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getTaskCategory**
-> \Swagger\Client\Model\Category getTaskCategory($id)
+> \Swagger\Client\Model\Category getTaskCategory($id, $authorization)
 
 Gets a Task Category
 
@@ -161,11 +179,16 @@ This endpoint returns the graph for a specific task category.
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\TaskCategoriesApi();
+$apiInstance = new Swagger\Client\Api\TaskCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | A Task Category's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->getTaskCategory($id);
+    $result = $apiInstance->getTaskCategory($id, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TaskCategoriesApi->getTaskCategory: ', $e->getMessage(), PHP_EOL;
@@ -178,6 +201,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| A Task Category&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -195,7 +219,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateTaskCategory**
-> \Swagger\Client\Model\Category updateTaskCategory($category)
+> \Swagger\Client\Model\Category updateTaskCategory($category, $authorization)
 
 Updates a Task Category
 
@@ -206,11 +230,16 @@ This endpoint is used to update an existing task category, for example to change
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\TaskCategoriesApi();
+$apiInstance = new Swagger\Client\Api\TaskCategoriesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $category = new \Swagger\Client\Model\APICategory(); // \Swagger\Client\Model\APICategory | A Task Category (just include JSON object as request body)
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->updateTaskCategory($category);
+    $result = $apiInstance->updateTaskCategory($category, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TaskCategoriesApi->updateTaskCategory: ', $e->getMessage(), PHP_EOL;
@@ -222,7 +251,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **category** | [**\Swagger\Client\Model\APICategory**](../Model/\Swagger\Client\Model\APICategory.md)| A Task Category (just include JSON object as request body) |
+ **category** | [**\Swagger\Client\Model\APICategory**](../Model/APICategory.md)| A Task Category (just include JSON object as request body) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 

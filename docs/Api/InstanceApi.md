@@ -1,6 +1,6 @@
 # Swagger\Client\InstanceApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -17,10 +17,14 @@ Gets the Instance
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\InstanceApi();
+$apiInstance = new Swagger\Client\Api\InstanceApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 
 try {
-    $result = $api_instance->getInstance();
+    $result = $apiInstance->getInstance();
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling InstanceApi->getInstance: ', $e->getMessage(), PHP_EOL;

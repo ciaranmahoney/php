@@ -1,6 +1,6 @@
 # Swagger\Client\OpportunityStateReasonsApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **getOpportunityStateReasons**
-> \Swagger\Client\Model\OpportunityStateReason[] getOpportunityStateReasons($skip, $top, $count_total)
+> object[] getOpportunityStateReasons($authorization, $skip, $top, $count_total)
 
 Gets a list of Opportunity State Reasons
 
@@ -19,13 +19,18 @@ This endpoint returns a list of opportunity state reasons set up for the Insight
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\OpportunityStateReasonsApi();
+$apiInstance = new Swagger\Client\Api\OpportunityStateReasonsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
 $skip = 56; // int | Optional, number of states to skip.
 $top = 56; // int | Optional, maximum number of states to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getOpportunityStateReasons($skip, $top, $count_total);
+    $result = $apiInstance->getOpportunityStateReasons($authorization, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling OpportunityStateReasonsApi->getOpportunityStateReasons: ', $e->getMessage(), PHP_EOL;
@@ -37,13 +42,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
  **skip** | **int**| Optional, number of states to skip. | [optional]
  **top** | **int**| Optional, maximum number of states to return in the response. | [optional]
  **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\OpportunityStateReason[]**](../Model/OpportunityStateReason.md)
+**object[]**
 
 ### Authorization
 

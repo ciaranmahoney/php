@@ -1,6 +1,6 @@
 # Swagger\Client\PermissionsApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -19,10 +19,14 @@ Permissions determine if an individual user can read, edit, delete, or create re
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\PermissionsApi();
+$apiInstance = new Swagger\Client\Api\PermissionsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 
 try {
-    $result = $api_instance->getPermissions();
+    $result = $apiInstance->getPermissions();
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PermissionsApi->getPermissions: ', $e->getMessage(), PHP_EOL;

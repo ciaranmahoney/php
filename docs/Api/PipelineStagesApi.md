@@ -1,6 +1,6 @@
 # Swagger\Client\PipelineStagesApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **getPipelineStage**
-> \Swagger\Client\Model\PipelineStage getPipelineStage($id)
+> \Swagger\Client\Model\PipelineStage getPipelineStage($id, $authorization)
 
 Gets a Pipeline Stage
 
@@ -20,11 +20,16 @@ This endpoint returns the graph for a specific pipeline stage.
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\PipelineStagesApi();
+$apiInstance = new Swagger\Client\Api\PipelineStagesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | A Pipeline Stage's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->getPipelineStage($id);
+    $result = $apiInstance->getPipelineStage($id, $authorization);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PipelineStagesApi->getPipelineStage: ', $e->getMessage(), PHP_EOL;
@@ -37,6 +42,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| A Pipeline Stage&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -54,7 +60,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getPipelineStages**
-> \Swagger\Client\Model\PipelineStage[] getPipelineStages($skip, $top, $count_total)
+> object[] getPipelineStages($authorization, $skip, $top, $count_total)
 
 Gets a list of Pipeline Stages
 
@@ -65,13 +71,18 @@ This read only endpoint returns a list of the pipeline stages that have been set
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\PipelineStagesApi();
+$apiInstance = new Swagger\Client\Api\PipelineStagesApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
 $skip = 56; // int | Optional, number of stages to skip.
 $top = 56; // int | Optional, maximum number of stages to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getPipelineStages($skip, $top, $count_total);
+    $result = $apiInstance->getPipelineStages($authorization, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PipelineStagesApi->getPipelineStages: ', $e->getMessage(), PHP_EOL;
@@ -83,13 +94,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
  **skip** | **int**| Optional, number of stages to skip. | [optional]
  **top** | **int**| Optional, maximum number of stages to return in the response. | [optional]
  **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\PipelineStage[]**](../Model/PipelineStage.md)
+**object[]**
 
 ### Authorization
 

@@ -1,37 +1,45 @@
 # Swagger\Client\EventsApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addEvent**](EventsApi.md#addEvent) | **POST** /Events | Adds a Calendar Event
-[**addEventLink**](EventsApi.md#addEventLink) | **POST** /Events/{id}/EventLinks | Adds an Event Link
-[**deleteEvent**](EventsApi.md#deleteEvent) | **DELETE** /Events/{id} | Deletes a Calendar Event
-[**deleteEventLink**](EventsApi.md#deleteEventLink) | **DELETE** /Events/{id}/EventLinks/{linkId} | Deletes an Event Link
-[**getEvent**](EventsApi.md#getEvent) | **GET** /Events/{id} | Gets a Calendar Event
-[**getEvents**](EventsApi.md#getEvents) | **GET** /Events | Gets a list of Calendar Events.
-[**getEventsBySearch**](EventsApi.md#getEventsBySearch) | **GET** /Events/Search | Gets a filtered list of Calendar Events.
-[**updateEvent**](EventsApi.md#updateEvent) | **PUT** /Events | Updates a Calendar Event
+[**addEntity**](EventsApi.md#addEntity) | **POST** /Events | Adds an Event
+[**addLink**](EventsApi.md#addLink) | **POST** /v3.0/Events/{id}/Links | Adds a Link
+[**deleteEntity**](EventsApi.md#deleteEntity) | **DELETE** /Events/{id} | Deletes an Event
+[**deleteLink**](EventsApi.md#deleteLink) | **DELETE** /Events/{id}/Links/{linkId} | Deletes a Link
+[**getEntities**](EventsApi.md#getEntities) | **GET** /Events | Gets a list of Events
+[**getEntitiesBySearch**](EventsApi.md#getEntitiesBySearch) | **GET** /Events/Search | Gets a filtered list of Events
+[**getEntity**](EventsApi.md#getEntity) | **GET** /Events/{id} | Gets an Event
+[**getLinks**](EventsApi.md#getLinks) | **GET** /v3.0/Events/{id}/Links | Gets an Event&#39;s Links
+[**updateEntity**](EventsApi.md#updateEntity) | **PUT** /Events | Updates an Event
 
 
-# **addEvent**
-> \Swagger\Client\Model\CalendarEvent addEvent($api_event)
+# **addEntity**
+> \Swagger\Client\Model\Event addEntity($authorization, $field_values)
 
-Adds a Calendar Event
+Adds an Event
+
+If you have trouble with creating an Event, try creating Events via the web interface, and then access those Events via the API. This way you            can see examples of the fields and sub-elements attached to the Event. A common source of problems during write/update request is caused when users omit            required fields, or insert invalid data in a field (e.g. reference a CATEGORY_ID that does not exist in the user's Insightly instance.
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$api_event = new \Swagger\Client\Model\APICalendarEvent(); // \Swagger\Client\Model\APICalendarEvent | The Event to add (just include JSON object as request body)
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
+$field_values = new \Swagger\Client\Model\Event2(); // \Swagger\Client\Model\Event2 | The record to add (just include the JSON object as the request body)
 
 try {
-    $result = $api_instance->addEvent($api_event);
+    $result = $apiInstance->addEntity($authorization, $field_values);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->addEvent: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->addEntity: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -40,11 +48,12 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **api_event** | [**\Swagger\Client\Model\APICalendarEvent**](../Model/\Swagger\Client\Model\APICalendarEvent.md)| The Event to add (just include JSON object as request body) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
+ **field_values** | [**\Swagger\Client\Model\Event2**](../Model/Event2.md)| The record to add (just include the JSON object as the request body) |
 
 ### Return type
 
-[**\Swagger\Client\Model\CalendarEvent**](../Model/CalendarEvent.md)
+[**\Swagger\Client\Model\Event**](../Model/Event.md)
 
 ### Authorization
 
@@ -57,25 +66,30 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **addEventLink**
-> \Swagger\Client\Model\EventLink addEventLink($id, $api_link)
+# **addLink**
+> \Swagger\Client\Model\APILinkDto addLink($id, $authorization, $api_link)
 
-Adds an Event Link
+Adds a Link
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$id = 789; // int | An Event's ID (EVENT_ID)
-$api_link = new \Swagger\Client\Model\APIEventLink(); // \Swagger\Client\Model\APIEventLink | The Event Link to add (just include JSON object as request body)
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$id = 789; // int | A Record's ID (RECORD_ID)
+$authorization = "{{Authorization}}"; // string | Authorization
+$api_link = new \Swagger\Client\Model\APILinkDto(); // \Swagger\Client\Model\APILinkDto | The Link to add (just include JSON object as request body)
 
 try {
-    $result = $api_instance->addEventLink($id, $api_link);
+    $result = $apiInstance->addLink($id, $authorization, $api_link);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->addEventLink: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->addLink: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -84,12 +98,13 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| An Event&#39;s ID (EVENT_ID) |
- **api_link** | [**\Swagger\Client\Model\APIEventLink**](../Model/\Swagger\Client\Model\APIEventLink.md)| The Event Link to add (just include JSON object as request body) |
+ **id** | **int**| A Record&#39;s ID (RECORD_ID) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
+ **api_link** | [**\Swagger\Client\Model\APILinkDto**](../Model/APILinkDto.md)| The Link to add (just include JSON object as request body) |
 
 ### Return type
 
-[**\Swagger\Client\Model\EventLink**](../Model/EventLink.md)
+[**\Swagger\Client\Model\APILinkDto**](../Model/APILinkDto.md)
 
 ### Authorization
 
@@ -102,23 +117,30 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **deleteEvent**
-> deleteEvent($id)
+# **deleteEntity**
+> deleteEntity($id, $authorization)
 
-Deletes a Calendar Event
+Deletes an Event
+
+
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$id = 789; // int | An Event's ID
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$id = 789; // int | Entity's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->deleteEvent($id);
+    $apiInstance->deleteEntity($id, $authorization);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->deleteEvent: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->deleteEntity: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -127,7 +149,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| An Event&#39;s ID |
+ **id** | **int**| Entity&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -144,24 +167,29 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **deleteEventLink**
-> deleteEventLink($id, $link_id)
+# **deleteLink**
+> deleteLink($id, $link_id, $authorization)
 
-Deletes an Event Link
+Deletes a Link
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$id = 789; // int | An Event's ID (EVENT_ID)
-$link_id = 789; // int | A EVENT Link's ID (EVENT_LINK_ID)
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$id = 789; // int | A Record's ID (RECORD_ID)
+$link_id = 789; // int | A Link's ID (LINK_ID)
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->deleteEventLink($id, $link_id);
+    $apiInstance->deleteLink($id, $link_id, $authorization);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->deleteEventLink: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->deleteLink: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -170,8 +198,9 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| An Event&#39;s ID (EVENT_ID) |
- **link_id** | **int**| A EVENT Link&#39;s ID (EVENT_LINK_ID) |
+ **id** | **int**| A Record&#39;s ID (RECORD_ID) |
+ **link_id** | **int**| A Link&#39;s ID (LINK_ID) |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -188,24 +217,34 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **getEvent**
-> \Swagger\Client\Model\CalendarEvent getEvent($id)
+# **getEntities**
+> object[] getEntities($authorization, $brief, $skip, $top, $count_total)
 
-Gets a Calendar Event
+Gets a list of Events
+
+Simple object graphs (excluding LINKS, etc.) are returned if \"brief=true\" is used in the query string.
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$id = 789; // int | An Event's ID
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
+$brief = false; // bool | Optional, true if response should only contain top level properties of the record.
+$skip = 56; // int | Optional, number of records to skip.
+$top = 56; // int | Optional, maximum number of records to return in the response.
+$count_total = false; // bool | Optional,true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getEvent($id);
+    $result = $apiInstance->getEntities($authorization, $brief, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->getEvent: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->getEntities: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -214,11 +253,15 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| An Event&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
+ **brief** | **bool**| Optional, true if response should only contain top level properties of the record. | [optional] [default to false]
+ **skip** | **int**| Optional, number of records to skip. | [optional]
+ **top** | **int**| Optional, maximum number of records to return in the response. | [optional]
+ **count_total** | **bool**| Optional,true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\CalendarEvent**](../Model/CalendarEvent.md)
+**object[]**
 
 ### Authorization
 
@@ -227,33 +270,40 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: application/octet-stream, application/json
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **getEvents**
-> \Swagger\Client\Model\CalendarEvent[] getEvents($brief, $skip, $top, $count_total)
+# **getEntitiesBySearch**
+> object[] getEntitiesBySearch($authorization, $field_name, $field_value, $brief, $skip, $top, $count_total)
 
-Gets a list of Calendar Events.
+Gets a filtered list of Events
 
-Simple object graphs (excluding EVENTLINKS) are returned if \"brief=true\" is used in the query string.
+To filter with a field name and value, both field_name and field_value parameters must be provided.            <br /> Simple object graphs (excluding TAGS, CUSTOMFIELDS, etc.) are returned if \"brief=true\" is used in the query string.
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$brief = false; // bool | Optional, true if response should only contain top level properties of the event.
-$skip = 56; // int | Optional, number of events to skip.
-$top = 56; // int | Optional, maximum number of events to return in the response.
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
+$field_name = "field_name_example"; // string | Optional, field name for object
+$field_value = "field_value_example"; // string | Optional, field value of the record
+$brief = false; // bool | Optional, true if response should only contain top level properties of the record.
+$skip = 56; // int | Optional, number of records to skip.
+$top = 56; // int | Optional, maximum number of records to return in the response.
 $count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
 
 try {
-    $result = $api_instance->getEvents($brief, $skip, $top, $count_total);
+    $result = $apiInstance->getEntitiesBySearch($authorization, $field_name, $field_value, $brief, $skip, $top, $count_total);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->getEvents: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->getEntitiesBySearch: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -262,14 +312,17 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **brief** | **bool**| Optional, true if response should only contain top level properties of the event. | [optional] [default to false]
- **skip** | **int**| Optional, number of events to skip. | [optional]
- **top** | **int**| Optional, maximum number of events to return in the response. | [optional]
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
+ **field_name** | **string**| Optional, field name for object | [optional]
+ **field_value** | **string**| Optional, field value of the record | [optional]
+ **brief** | **bool**| Optional, true if response should only contain top level properties of the record. | [optional] [default to false]
+ **skip** | **int**| Optional, number of records to skip. | [optional]
+ **top** | **int**| Optional, maximum number of records to return in the response. | [optional]
  **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
 
 ### Return type
 
-[**\Swagger\Client\Model\CalendarEvent[]**](../Model/CalendarEvent.md)
+**object[]**
 
 ### Authorization
 
@@ -278,38 +331,35 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: application/octet-stream, application/json
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **getEventsBySearch**
-> \Swagger\Client\Model\CalendarEvent[] getEventsBySearch($title, $owner_user_id, $start_date_utc, $end_date_utc, $updated_after_utc, $brief, $skip, $top, $count_total)
+# **getEntity**
+> \Swagger\Client\Model\Event getEntity($id, $authorization)
 
-Gets a filtered list of Calendar Events.
+Gets an Event
 
-Only one optional parameter (excluding top, skip and count_total) can be specified. Simple object graphs (excluding EVENTLINKS) are returned if \"brief=true\" is used in the query string.
+
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$title = "title_example"; // string | Optional, event title.
-$owner_user_id = 789; // int | Optional, id of the owner user.
-$start_date_utc = new \DateTime(); // \DateTime | Optional, start date of the event. Only the date is considered, not the time.
-$end_date_utc = new \DateTime(); // \DateTime | Optional, end date of the event. Only the date is considered, not the time.
-$updated_after_utc = new \DateTime(); // \DateTime | Optional, earliest date when event was last updated. Date and time are considered.
-$brief = false; // bool | Optional, true if response should only contain top level properties of the event.
-$skip = 56; // int | Optional, number of events to skip.
-$top = 56; // int | Optional, maximum number of events to return in the response.
-$count_total = false; // bool | Optional, true if total number of records should be returned in the response headers.
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$id = 789; // int | The record's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->getEventsBySearch($title, $owner_user_id, $start_date_utc, $end_date_utc, $updated_after_utc, $brief, $skip, $top, $count_total);
+    $result = $apiInstance->getEntity($id, $authorization);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->getEventsBySearch: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->getEntity: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -318,19 +368,12 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **title** | **string**| Optional, event title. | [optional]
- **owner_user_id** | **int**| Optional, id of the owner user. | [optional]
- **start_date_utc** | **\DateTime**| Optional, start date of the event. Only the date is considered, not the time. | [optional]
- **end_date_utc** | **\DateTime**| Optional, end date of the event. Only the date is considered, not the time. | [optional]
- **updated_after_utc** | **\DateTime**| Optional, earliest date when event was last updated. Date and time are considered. | [optional]
- **brief** | **bool**| Optional, true if response should only contain top level properties of the event. | [optional] [default to false]
- **skip** | **int**| Optional, number of events to skip. | [optional]
- **top** | **int**| Optional, maximum number of events to return in the response. | [optional]
- **count_total** | **bool**| Optional, true if total number of records should be returned in the response headers. | [optional] [default to false]
+ **id** | **int**| The record&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
-[**\Swagger\Client\Model\CalendarEvent[]**](../Model/CalendarEvent.md)
+[**\Swagger\Client\Model\Event**](../Model/Event.md)
 
 ### Authorization
 
@@ -339,29 +382,33 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: application/octet-stream, application/json
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
-# **updateEvent**
-> \Swagger\Client\Model\CalendarEvent updateEvent($api_event, $brief)
+# **getLinks**
+> \Swagger\Client\Model\APILinkDto[] getLinks($id, $authorization)
 
-Updates a Calendar Event
+Gets an Event's Links
 
 ### Example
 ```php
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\EventsApi();
-$api_event = new \Swagger\Client\Model\APICalendarEvent(); // \Swagger\Client\Model\APICalendarEvent | The Event to update (just include JSON object as request body)
-$brief = false; // bool | Optional, true if you wish to do a partial update containing only top level properties of the Event. When true, all sub-collections are ignored.
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$id = 789; // int | A Record's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $result = $api_instance->updateEvent($api_event, $brief);
+    $result = $apiInstance->getLinks($id, $authorization);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling EventsApi->updateEvent: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling EventsApi->getLinks: ', $e->getMessage(), PHP_EOL;
 }
 ?>
 ```
@@ -370,12 +417,63 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **api_event** | [**\Swagger\Client\Model\APICalendarEvent**](../Model/\Swagger\Client\Model\APICalendarEvent.md)| The Event to update (just include JSON object as request body) |
- **brief** | **bool**| Optional, true if you wish to do a partial update containing only top level properties of the Event. When true, all sub-collections are ignored. | [optional] [default to false]
+ **id** | **int**| A Record&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
-[**\Swagger\Client\Model\CalendarEvent**](../Model/CalendarEvent.md)
+[**\Swagger\Client\Model\APILinkDto[]**](../Model/APILinkDto.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/octet-stream, application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+# **updateEntity**
+> \Swagger\Client\Model\Event updateEntity($authorization, $field_values)
+
+Updates an Event
+
+If you have trouble updating an Event, try accessing the Event via the GET request to inspect its fields and sub-elements. A common source of            problems with write/update requests occurs when users either omit required fields, or insert invalid data into a field (for example, by referring a            CATEGORY_ID or LINK_ID which does not exist.
+
+### Example
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$apiInstance = new Swagger\Client\Api\EventsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
+$authorization = "{{Authorization}}"; // string | Authorization
+$field_values = new \Swagger\Client\Model\Event1(); // \Swagger\Client\Model\Event1 | The record to update (just include the JSON object as the request body)
+
+try {
+    $result = $apiInstance->updateEntity($authorization, $field_values);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling EventsApi->updateEntity: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
+ **field_values** | [**\Swagger\Client\Model\Event1**](../Model/Event1.md)| The record to update (just include the JSON object as the request body) |
+
+### Return type
+
+[**\Swagger\Client\Model\Event**](../Model/Event.md)
 
 ### Authorization
 

@@ -12,8 +12,6 @@ Name | Type | Description | Notes
 **date_created_utc** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **date_updated_utc** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **url** | **string** |  | [optional] 
-**can_edit** | **bool** |  | [optional] 
-**can_delete** | **bool** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

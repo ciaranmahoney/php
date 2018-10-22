@@ -1,6 +1,6 @@
 # Swagger\Client\FileAttachmentsApi
 
-All URIs are relative to *https://api.insight.ly/v2.2*
+All URIs are relative to *https://api.insightly.com/v3.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **deleteFileAttachment**
-> deleteFileAttachment($id)
+> deleteFileAttachment($id, $authorization)
 
 Deletes a File Attachment
 
@@ -20,11 +20,16 @@ Deletes a File Attachment
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\FileAttachmentsApi();
+$apiInstance = new Swagger\Client\Api\FileAttachmentsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | A File Attachment's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->deleteFileAttachment($id);
+    $apiInstance->deleteFileAttachment($id, $authorization);
 } catch (Exception $e) {
     echo 'Exception when calling FileAttachmentsApi->deleteFileAttachment: ', $e->getMessage(), PHP_EOL;
 }
@@ -36,6 +41,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| A File Attachment&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
@@ -53,7 +59,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getFileAttachment**
-> getFileAttachment($id)
+> getFileAttachment($id, $authorization)
 
 Gets a File Attachment
 
@@ -64,11 +70,16 @@ Gets a File Attachment
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\Api\FileAttachmentsApi();
+$apiInstance = new Swagger\Client\Api\FileAttachmentsApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client()
+);
 $id = 789; // int | A File Attachment's ID
+$authorization = "{{Authorization}}"; // string | Authorization
 
 try {
-    $api_instance->getFileAttachment($id);
+    $apiInstance->getFileAttachment($id, $authorization);
 } catch (Exception $e) {
     echo 'Exception when calling FileAttachmentsApi->getFileAttachment: ', $e->getMessage(), PHP_EOL;
 }
@@ -80,6 +91,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| A File Attachment&#39;s ID |
+ **authorization** | **string**| Authorization | [default to {{Authorization}}]
 
 ### Return type
 
